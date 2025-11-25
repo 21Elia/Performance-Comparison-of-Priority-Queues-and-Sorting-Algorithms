@@ -47,7 +47,7 @@ def runTests(sizes, reps, results, structure, structureName):
         results[structureName]["Peek Max"].append(averagePeekMaxTime * 1000) # in ms
         results[structureName]["Extract Max"].append(averageExtractMaxTime * 1000) # in ms
 
-def plotComparison(results, sizes, opName):
+def plotComparison(results, sizes, opName, zoom):
 
     plt.figure()
     plt.title(f"{opName} Comparison: Heap, Unsorted List, Sorted List over size n")
@@ -58,6 +58,20 @@ def plotComparison(results, sizes, opName):
 
     plt.xlabel("Input size (n)")
     plt.ylabel("Time (ms)")
+    if(zoom and opName == "Peek Max"):
+        plt.ylim(0, 0.0003) # zoom in for Peek Max
+        plt.savefig(f"graphs/{opName}-zoom-comparison.png")
+        plt.legend()
+        plt.savefig(f"graphs/{opName}zoom-comparison.png")
+        plt.show()
+        return True
+    if(zoom and opName == "Extract Max"):
+        plt.ylim(0, 0.003) # zoom in for Extract Max
+        plt.savefig(f"graphs/{opName}-zoom-comparison.png")
+        plt.legend()
+        plt.savefig(f"graphs/{opName}-zoom-comparison.png")
+        plt.show()
+        return True
     plt.legend()
     plt.savefig(f"graphs/{opName}-comparison.png")
     plt.show()
@@ -125,7 +139,7 @@ if __name__ == "__main__":
         sizes.append(i)
 
     print(str(sizes))
-    reps = 100
+    reps = 1000
     heap = MaxHeap()
     unsortedLinkedList = UnsortedLinkedListPQ()
     sortedLinkedList = SortedLinkedListPQ()
@@ -170,7 +184,7 @@ if __name__ == "__main__":
     plotStructureGraphs(results, sizes, "Unsorted Linked List")
     plotStructureGraphs(results, sizes, "Sorted Linked List")
 
-
-    plotComparison(results, sizes, "Insert")
-    plotComparison(results, sizes, "Peek Max")
-    plotComparison(results, sizes, "Extract Max")
+    zoom = True
+    plotComparison(results, sizes, "Insert", zoom)
+    plotComparison(results, sizes, "Peek Max", zoom)
+    plotComparison(results, sizes, "Extract Max", zoom)
